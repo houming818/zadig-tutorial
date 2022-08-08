@@ -14,9 +14,9 @@ tags:
   mysql: false
 endpoint:
   # endpoint.type is the type of Zadig system endpoint. It can be of type FQDN or IP. By default the type is FQDN.
-  type: IP
+  type: FQDN
   # FQDN is the domain name the user choose to visit in. It must be set if endpoint is of type FQDN.
-  FQDN: poc.example.com
+  FQDN:  ##FQDN##
   # IP is the ip of one of the cluster's worker node. It must be set if the endpoint is of type IP. By default it is empty.
   IP:
 global:
@@ -34,7 +34,7 @@ global:
   builtInImage:
     ubuntuBase: koderover.tencentcloudcr.com/koderover-public/build-base:${BuildOS}-amd64
 # protocol is the internet protocol used to access zadig
-protocol: http
+protocol: https
 microservice:
   aslan:
     image:
@@ -278,7 +278,7 @@ dex:
     staticClients:
       - id: zadig
         redirectURIs:
-          - 'http://##IP##:##PORT##/api/v1/callback'
+          - 'https://##FQDN##/api/v1/callback'
         name: 'zadig'
         secret: ##CLIENT_SECRET##
     enablePasswordDB: true

@@ -4,8 +4,7 @@ helm-init:
 	source env.sh; \
 	cd helm-zadig; \
 	cp values.yaml.tpl values.yaml; \
-	sed -i 's|##IP##|'$$IP'|g' values.yaml; \
-	sed -i 's|##PORT##|'$$PORT'|g' values.yaml; \
+	sed -i 's|##FQDN##|'$$FQDN'|g' values.yaml; \
 	sed -i 's|##GLOBAL_SECRET##|'$$GLOBAL_SECRET'|g' values.yaml; \
 	sed -i 's|##MYSQL_HOST##|'$$MYSQL_HOST'|g' values.yaml; \
 	sed -i 's|##MYSQL_PORT##|'$$MYSQL_PORT'|g' values.yaml; \
@@ -20,11 +19,10 @@ helm-init:
 helm-deploy:
 	source env.sh; \
 	export NAMESPACE=zadig; \
-	helm upgrade --install zadig --namespace $${NAMESPACE} --version=1.13.0 --set endpoint.type=IP \
-	--set endpoint.IP=$${IP} \
-	--set gloo.gatewayProxies.gatewayProxy.service.httpNodePort=$${PORT} \
-	--set global.extensions.extAuth.extauthzServerRef.namespace=$${NAMESPACE} \
-	--set gloo.gatewayProxies.gatewayProxy.service.type=NodePort ./helm-zadig
+	helm upgrade \
+	--install zadig --namespace $${NAMESPACE} --version=1.13.0 \
+	--set gloo.gatewayProxies.gatewayProxy.service.httpPort=8080 \
+	--set global.extensions.extAuth.extauthzServerRef.namespace=$${NAMESPACE}  ./helm-zadig
 
 helm-undeploy:
 	helm uninstall -n zadig zadig
@@ -32,9 +30,6 @@ helm-undeploy:
 helm-template:
 	source env.sh; \
 	export NAMESPACE=zadig; \
-	helm template --set endpoint.type=IP \
-	--set endpoint.IP=$${IP} \
-	--set gloo.gatewayProxies.gatewayProxy.service.httpNodePort=$${PORT} \
-	--set global.extensions.extAuth.extauthzServerRef.namespace=$${NAMESPACE} \
-	--set gloo.gatewayProxies.gatewayProxy.service.type=NodePort ./helm-zadig
-
+	helm template \
+	--set gloo.gatewayProxies.gatewayProxy.service.httpPort=8080 \
+	--set global.extensions.extAuth.extauthzServerRef.namespace=$${NAMESPACE} ./helm-zadig

@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/instance: gateway-proxy
+    app.kubernetes.io/name: gateway-proxy 
+  name: gateway-proxy 
+  namespace: zadig
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: zadig.grepcode.cn
+    http:
+      paths:
+      - backend:
+          service:
+            name: gateway-proxy 
+            port:
+              number: 8080
+        path: /
+        pathType: ImplementationSpecific
