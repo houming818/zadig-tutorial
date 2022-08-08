@@ -46,7 +46,7 @@ controller:
 
   image:
     ## The image repository of the Ingress Controller.
-    repository: hub.grepcode.cn:55582/zadig/nginx-ingress
+    repository: ingress/nginx-ingress
 
     ## The tag of the Ingress Controller image.
     tag: "2.3.0"
