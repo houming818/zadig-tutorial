@@ -61,17 +61,18 @@ service:
   #   - 0.0.0.0/0
   # loadBalancerIP: 1.2.3.4
 ingress:
-  enabled: false
+  enabled: true
   # Used to create an Ingress record.
   hosts:
-    - name: sonarqube.your-org.com
+    - name: sonar.grepcode.cn
       # Different clouds or configurations might need /* as the default path
       path: /
       # For additional control over serviceName and servicePort
       # serviceName: someService
       # servicePort: somePort
-  annotations: {}
-  # kubernetes.io/ingress.class: nginx
+  annotations:
+    ingressClassName: nginx
+    kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
   # This property allows for reports up to a certain size to be uploaded to SonarQube
   # nginx.ingress.kubernetes.io/proxy-body-size: "8m"
@@ -311,13 +312,13 @@ emptyDir: {}
 jdbcDatabaseType: postgresql
 
 ## Override JDBC URL
-# jdbcUrlOverride: "jdbc:postgresql://myPostgress/myDatabase;socketTimeout=1500"
+jdbcUrlOverride: "jdbc:postgresql://192.168.1.102:5432/sonardb?user=postgres&password=x02UZPLhKz8zneLafLgUk8Zjm2PG3Iv9"
 
 ## Configuration values for postgresql dependency
 ## ref: https://github.com/kubernetes/charts/blob/master/stable/postgresql/README.md
 postgresql:
   # Enable to deploy the PostgreSQL chart
-  enabled: true
+  enabled: false
   # To use an external PostgreSQL instance, set enabled to false and uncomment
   # the line below:
   # postgresqlServer: ""
@@ -325,7 +326,7 @@ postgresql:
   # instance, set enabled to false and provide the name of the secret on the
   # line below:
   # existingSecret: ""
-  # existingSecretPasswordKey: "postgresql-password"
+  existingSecretPasswordKey: "postgresql-password"
   postgresqlUsername: "sonarUser"
   postgresqlPassword: "sonarPass"
   postgresqlDatabase: "sonarDB"
