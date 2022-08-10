@@ -46,7 +46,7 @@ controller:
 
   image:
     ## The image repository of the Ingress Controller.
-    repository: hub.grepcode.cn:55582/zadig/nginx-ingress
+    repository: nginx/nginx-ingress
 
     ## The tag of the Ingress Controller image.
     tag: "2.3.0"
@@ -226,7 +226,7 @@ controller:
     create: true
 
     ## The type of service to create for the Ingress Controller.
-    type: NodePort
+    type: LoadBalancer
 
     ## The externalTrafficPolicy of the service. The value Local preserves the client source IP.
     externalTrafficPolicy: Local
@@ -270,7 +270,7 @@ controller:
       port: 80
 
       ## The custom NodePort for the HTTP port. Requires controller.service.type set to NodePort.
-      nodePort: "31180"
+      nodePort: ""
 
       ## The HTTP port on the POD where the Ingress Controller service is running.
       targetPort: 80
@@ -283,7 +283,7 @@ controller:
       port: 443
 
       ## The custom NodePort for the HTTPS port. Requires controller.service.type set to NodePort.
-      nodePort: "31181"
+      nodePort: ""
 
       ## The HTTPS port on the POD where the Ingress Controller service is running.
       targetPort: 443
