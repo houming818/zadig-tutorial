@@ -3,7 +3,6 @@ apiVersion: k8s.nginx.org/v1alpha1
 kind: GlobalConfiguration
 metadata:
   name: {{ include "nginx-ingress.name" . }}
-  namespace: {{ .Values.namespace }}
   labels:
     {{- include "nginx-ingress.labels" . | nindent 4 }}
 spec:
