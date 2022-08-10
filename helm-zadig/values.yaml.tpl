@@ -14,14 +14,14 @@ tags:
   mysql: false
 endpoint:
   # endpoint.type is the type of Zadig system endpoint. It can be of type FQDN or IP. By default the type is FQDN.
-  type: FQDN
+  type: IP
   # FQDN is the domain name the user choose to visit in. It must be set if endpoint is of type FQDN.
-  FQDN:  ##FQDN##
+  FQDN:  
   # IP is the ip of one of the cluster's worker node. It must be set if the endpoint is of type IP. By default it is empty.
-  IP:
+  IP: CHANGE_HERE_BY_YOURSELF
 global:
   encryption:
-    key: ##GLOBAL_SECRET##
+    key: CHANGE_HERE_BY_YOURSELF
   image:
     registry: koderover.tencentcloudcr.com/koderover-public
   extensions:
@@ -143,7 +143,7 @@ init:
     repository: koderover.tencentcloudcr.com/koderover-public/init
     tag: 1.13.0-amd64
     pullPolicy: Always
-  adminPassword: zadig
+  adminPassword: CHANGE_HERE_BY_YOURSELF
   adminEmail: admin@example.com
 nsqd:
   image:
@@ -170,12 +170,12 @@ ua:
     pullPolicy: Always
 connections:
   mysql:
-    host: ##MYSQL_HOST##:##MYSQL_PORT##
+    host: CHANGE_HERE_BY_YOURSELF
     auth:
       user: root
-      password: ##MYSQL_SECRET##
+      password: CHANGE_HERE_BY_YOURSELF
   mongodb:
-    connectionString: ##MONGO_DSN##
+    connectionString: CHANGE_HERE_BY_YOURSELF
     db: zadig
 imagePullSecrets:
   - name: qn-registry-secret
@@ -205,7 +205,7 @@ ingress-nginx:
         http: 31147
 minio:
   # endpoint is the endpoint for the minio, if the user choose to provide their own minio
-  endpoint: ##MINIO_DSN##
+  endpoint: CHANGE_HERE_BY_YOURSELF
   # bucket is the bucket for zadig system to use.
   bucket: bucket
   # data persistence related parameter
@@ -217,9 +217,9 @@ minio:
   defaultBuckets: "bucket"
   fullnameOverride: zadig-minio
   accessKey:
-    password: ##MINIO_AK##
+    password: CHANGE_HERE_BY_YOURSELF
   secretKey:
-    password: ##MINIO_SK##
+    password: CHANGE_HERE_BY_YOURSELF
   protocol: http
   image:
     registry: koderover.tencentcloudcr.com
@@ -232,7 +232,7 @@ mongodb:
     storageClass: nfs-client
   auth:
     enabled: false
-    rootPassword: ##MONGO_SECRET##
+    rootPassword: CHANGE_HERE_BY_YOURSELF
   fullnameOverride: zadig-mongodb
   image:
     registry: koderover.tencentcloudcr.com
@@ -243,7 +243,7 @@ mysql:
     storageClass: nfs-client
   auth:
     database: dex
-    rootPassword: ##MYSQL_SECRET##
+    rootPassword: CHANGE_HERE_BY_YOURSELF
   primary:
     persistence:
       enabled: true
@@ -266,11 +266,11 @@ dex:
     storage:
       type: mysql
       config:
-        host: ##MYSQL_HOST##
-        port: ##MYSQL_PORT##
+        host: CHANGE_HERE_BY_YOURSELF
+        port: 3306
         database: dex
-        user: root
-        password: ##MYSQL_SECRET##
+        user: CHANGE_HERE_BY_YOURSELF
+        password: CHANGE_HERE_BY_YOURSELF
         ssl:
           mode: "false"
     web:
@@ -278,15 +278,18 @@ dex:
     staticClients:
       - id: zadig
         redirectURIs:
-          - 'https://##FQDN##/api/v1/callback'
+          - CHANGE_HERE_BY_YOURSELF
         name: 'zadig'
-        secret: ##CLIENT_SECRET##
+        secret: CHANGE_HERE_BY_YOURSELF
     enablePasswordDB: true
 gloo:
   settings:
     singleNamespace: true
   gatewayProxies:
     gatewayProxy:
+      service:
+        type: NodePort
+        httpNodePort: 31110
       gatewaySettings:
         customHttpGateway:
           options:
